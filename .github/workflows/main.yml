@@ -11,7 +11,7 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
-    zap_scan:
+  OWASP-ZAP-SCAN:
     runs-on: ubuntu-latest
     name: Scan the webapplication
     steps:
