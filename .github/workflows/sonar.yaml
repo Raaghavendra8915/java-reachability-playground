@@ -18,6 +18,21 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  sca-scan:
+    needs: sast-scan
+    runs-on: ubuntu-latest
+    name: Maven using Snyk security scan
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/maven@master
+        continue-on-error: true 
+        with:
+          snyk-token: ${{ secrets.SNYK_TOKEN }}
+          
   Build-image-publish-to-ecr:
     needs: sca-scan
     runs-on: ubuntu-latest
