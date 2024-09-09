@@ -15,4 +15,4 @@ RUN apt-get update && apt-get install -y maven && mvn package
 EXPOSE 8080
 
 # Define the entry point to run your Java application
-CMD ["java", "-jar", "target/springboot-images-new.jar"]
+CMD ["java", "-jar", "java-reachable-goof-1.0-SNAPSHOT.jar"]
