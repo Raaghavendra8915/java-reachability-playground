@@ -9,12 +9,14 @@
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <sonar.organization>rahuls512</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
     <dependencies>
         <dependency>
             <groupId>commons-collections</groupId>
             <artifactId>commons-collections</artifactId>
-            <version>3.2.1</version>
+            <version>3.2.2</version>
         </dependency>
         <dependency>
             <groupId>org.nd4j</groupId>
@@ -68,5 +70,6 @@
                 </executions>
               </plugin>
        </plugins>
+       <finalName>springboot-images-new</finalName>
        </build>
 </project>
