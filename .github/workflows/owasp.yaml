@@ -144,4 +144,4 @@ jobs:
       - name: ZAP Scan
         uses: zaproxy/action-baseline@v0.12.0
         with:
-          target: 'http://localhost:8080'
+          target: ''https://devopsautomation-with-rahulsharan.link''
