@@ -108,7 +108,7 @@ jobs:
           KUBECONFIG: ${{secrets.KUBE_CONFIG}}  
 
       - name: Update kubeconfig for EKS
-        run: aws eks update-kubeconfig --name java-app-01 --region us-west-1
+        run: aws eks update-kubeconfig --name testkube --region us-west-2
     
       - name: Verify kubectl configuration
         run: kubectl config view          
