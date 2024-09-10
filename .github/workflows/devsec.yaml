@@ -135,6 +135,6 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           #docker_name: '767397705569.dkr.ecr.us-west-2.amazonaws.com/devsecops:1.0.0'
-          target: 'https://devopsautomation-with-rahulsharan.link'
+          target: 'http://localhost:8080'
           rules_file_name: '.zap/rules.tsv'
           cmd_options: '-a'
