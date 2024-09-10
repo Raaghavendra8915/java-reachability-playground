@@ -124,10 +124,10 @@ jobs:
     runs-on: ubuntu-latest
     name: Scan the web application with ZAP
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          ref: main
+      #- name: Checkout code
+        #uses: actions/checkout@v2
+        #with:
+          #ref: main
 
       - name: ZAP Scan
         uses: zaproxy/action-baseline@v0.12.0
