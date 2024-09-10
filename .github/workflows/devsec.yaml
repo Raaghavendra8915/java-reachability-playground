@@ -83,7 +83,7 @@ jobs:
         continue-on-error: true
         with:
           aws-region: us-west-2
-          repository: devsecops
+          repository: $REGISTRY/$REPOSITORY
           tag: 1.0.0
       - run: echo "${{ steps.docker-scan.outputs.total }} total vulnerabilities."
 
