@@ -131,9 +131,9 @@ jobs:
           #ref: main
 
       - name: ZAP Scan
-        uses: zaproxy/action-baseline@v0.12.0
+        uses: zaproxy/action-baseline@v0.6.1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          #docker_name: '767397705569.dkr.ecr.us-west-2.amazonaws.com/devsecops:1.0.0'
-          target: 'http://localhost:8080'
+          docker_name: 'zaproxy/action-baseline@v0.12.0'
+          target: 'http://testphp.vulnweb.com/'
+          rules_file_name: '.zap/rules.tsv'
           cmd_options: '-a'
