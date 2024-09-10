@@ -63,87 +63,29 @@ jobs:
           IMAGE_TAG: 1.0.0
         run: |
           docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
-          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
-             
-
-      - name: Login to GitHub Packages
-        uses: docker/login-action@v1  # Updated to use Docker's official login-action
-        with:
-          registry: docker.pkg.github.com
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-  Image-Scan-with-ECR:
-    needs: Build-image-publish-to-ecr
-    runs-on: ubuntu-latest
-    name: Image Scan with ECR
-    steps:
-      - name: Scan Docker image with ECR Scan
-        uses: alexjurkiewicz/ecr-scan-image@v1.7.1
-        continue-on-error: true
-        with:
-          aws-region: us-west-2
-          repository: $REGISTRY/$REPOSITORY
-          tag: 1.0.0
-      - run: echo "${{ steps.docker-scan.outputs.total }} total vulnerabilities."
-
-  Image-Deploy-to-EKS:
-    needs: Image-Scan-with-ECR
-    runs-on: ubuntu-latest
-    name: Image Deploy to EKS
-    steps:
+          
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      - name: Install kubectl
-        uses: azure/setup-kubectl@v2.0
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@0.20.0
         with:
-          version: 'v1.27.0'
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-west-2
+          image-ref: '767397705569.dkr.ecr.us-west-2.amazonaws.com/devsecops:${{ github.sha }}'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
         env:
-          KUBECONFIG: ${{secrets.KUBE_CONFIG}}  
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: us-west-2
 
-      - name: Update kubeconfig for EKS
-        run: aws eks update-kubeconfig --name testkube --region us-west-2
-    
-      - name: Verify kubectl configuration
-        run: kubectl config view          
-  
-      - name: Apply Kubernetes manifests
-        run: |
-          kubectl apply -f deployment.yaml
-          kubectl apply -f service.yaml
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: 'trivy-results.sarif'
+          
+          
       
-  zap_scan:
-    needs: Image-Deploy-to-EKS
-    runs-on: ubuntu-latest
-    name: Scan the web application with ZAP
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-      - name: Build with Maven
-        run: mvn -B package --file pom.xml
-      - name: Build Image
-        env:
-          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          REPOSITORY: devsecops
-          IMAGE_TAG: 1.0.0
-        run: docker build -t owasp-zap-poc .
-      - name: Run Docker Container
-        run: |
-          docker run -d -p 8080:8080 owasp-zap-poc
-          curl -v localhost:8080
-      - name: ZAP Scan
-        uses: zaproxy/action-baseline@v0.12.0
-        with:
-          target: 'https://devopsautomation-with-rahulsharan.link'
+        
+  
+
+      
