@@ -140,8 +140,10 @@ jobs:
           IMAGE_TAG: 1.0.0
         run: docker build -t owasp-zap-poc .
       - name: Run Docker Container
-        run: docker run -d -p 8080:8080 owasp-zap-poc
+        run: |
+          docker run -d -p 8080:8080 owasp-zap-poc
+          curl -v localhost:8080
       - name: ZAP Scan
         uses: zaproxy/action-baseline@v0.12.0
         with:
-          target: ''https://devopsautomation-with-rahulsharan.link''
+          target: 'https://devopsautomation-with-rahulsharan.link'
