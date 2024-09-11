@@ -95,6 +95,25 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: us-west-2
 
+  Scan-for-secrets:
+   runs-on: ubuntu-latest 
+   steps:
+     - uses: actions/checkout@v2
+     - name: Install Whispers
+       run: sudo pip install whispers
+       
+     # Scan repo for secrets
+     - name: Run scanner for the repository
+       run: whispers ${{ github.workspace }} > /tmp/scan_output.json
+
+     # Upload Artifacts
+     - name: Upload the scan output
+       uses: actions/upload-artifact@v2
+       with:
+         name: scan_results
+         path: /tmp/scan_output.json
+         retention-days: 2
+
  
           
       
