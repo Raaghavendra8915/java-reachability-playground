@@ -70,7 +70,7 @@ jobs:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.20.0
         with:
-          image-ref: 'trivy image 767397705569.dkr.ecr.us-west-2.amazonaws.com/devsecops:1.0.0'
+          image-ref: 'trivy image --docker-host string 767397705569.dkr.ecr.us-west-2.amazonaws.com/devsecops:1.0.0'
           format: 'sarif'
           output: 'trivy-results.sarif'
         env:
