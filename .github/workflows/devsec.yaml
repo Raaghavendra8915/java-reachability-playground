@@ -135,5 +135,4 @@ jobs:
         with:
           docker_name: 'zaproxy/action-baseline@v0.12.0'
           target: 'http://testphp.vulnweb.com/'
-          rules_file_name: '.zap/rules.tsv'
           cmd_options: '-a'
