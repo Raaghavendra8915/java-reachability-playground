@@ -95,38 +95,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: us-west-2
 
-  scan-main:
-    permissions:
-      id-token: write
-      repository-projects: read
-      pull-requests: read
-      contents: read
-    name: endorctl-scan
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v3
-    - name: Setup Java
-      uses: actions/setup-java@v3
-      with:
-        distribution: 'microsoft'
-        java-version: '17'
-    - name: Build Package
-      run: mvn clean install
-    - name: 'Endor Labs Scan Push to main'
-      if: ${{ github.event_name == 'push' }}
-      uses: endorlabs/github-action@v1.1.4
-      with:
-        namespace: 'example' # Replace with your Endor Labs tenant namespace
-        scan_dependencies: true
-        scan_secrets: true
-        pr: false
-        scan_summary_output_type: 'table'
-        sarif_file: 'findings.sarif'
-    - name: Upload findings to github
-      uses: github/codeql-action/upload-sarif@v3
-      with:
-        sarif_file: 'findings.sarif'
+ 
           
       
         
