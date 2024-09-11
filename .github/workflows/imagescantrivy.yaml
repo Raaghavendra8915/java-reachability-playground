@@ -33,6 +33,7 @@ jobs:
         with:
           image: $REGISTRY/$REPOSITORY:$IMAGE_TAG
           args: --severity-threshold=high
+          severity: 'CRITICAL,HIGH'
     
       - name: Push in ECR & Update Lambda Function
         env:
