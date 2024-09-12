@@ -9,5 +9,12 @@ jobs:
         uses: snyk/actions/iac@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          file: /infrastructure/main.tf
+
+      - name : iac scan 
+        run : snyk iac test main.tf
+
+      
+          
+        
+        #with:
+          #file: /infrastructure/main.tf
