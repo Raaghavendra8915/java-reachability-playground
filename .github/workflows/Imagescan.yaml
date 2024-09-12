@@ -27,7 +27,7 @@ jobs:
         uses: alexjurkiewicz/ecr-scan-image@v1.7.1
         with:
           aws-region: us-west-2
-          repository: $REGISTRY/$REPOSITORY
+          repository: devsecops
           tag: 1.0.0
       # Access scan results in later steps
       - run: echo "${{ steps.docker-scan.outputs.total }} total vulnerabilities."
