@@ -14,7 +14,7 @@ jobs:
 
       # Step 2: Set up Snyk (Install the Snyk CLI)
       - name: Set up Snyk
-        uses: snyk/actions/setup@v2
+        uses: snyk/actions/setup@master
         with:
           version: 'latest'
 
