@@ -18,4 +18,15 @@ jobs:
           severity: 'CRITICAL,HIGH'
           args: --report
 
+      - name: Set up Snyk
+        uses: snyk/actions/setup@v2
+        with:
+          version: 'latest'
+
+      # Step 3: Run the Snyk IaC scan
+      - name: Snyk IaC Scan
+        run: snyk iac test --severity-threshold=high
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
     
