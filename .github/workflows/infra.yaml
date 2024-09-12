@@ -10,7 +10,7 @@ jobs:
     steps:
       # Step 1: Checkout the repository
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
       # Step 2: Set up Snyk (Install the Snyk CLI)
       - name: Set up Snyk
