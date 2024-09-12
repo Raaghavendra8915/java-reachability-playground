@@ -16,27 +16,18 @@ jobs:
       - name: Build & Push Docker image
         id: docker-build
         env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: devsecops
-          # Use the git tag as the image tag.
-          # github.ref format is like `refs/tags/v0.0.1`, so we strip the the
-          # `refs/tags/` prefix and export this for later use.
-          IMAGE_TAG: ${{ github.ref }}
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: devsecops
+          IMAGE_TAG: 1.0.0
         run: |
-          tag=${IMAGE_TAG##refs/tags/}
-          echo "Tag is $tag"
-          echo "::set-output name=tag::$tag"
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$tag .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$tag
+          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
+          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
       - name: Scan Docker image
         id: docker-scan
         uses: alexjurkiewicz/ecr-scan-image@v1.7.1
         with:
-          repository: devsecops
-          tag: ${{ steps.docker-build.outputs.tag }}
-          # fail_threshold: medium
-          # ignore_list: |
-          #   CVE-2014-7654321
-          #   CVE-2014-456132
+          aws-region: us-west-2
+          repository: $REGISTRY/$REPOSITORY
+          tag: 1.0.0
       # Access scan results in later steps
       - run: echo "${{ steps.docker-scan.outputs.total }} total vulnerabilities."
