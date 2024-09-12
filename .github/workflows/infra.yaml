@@ -1,23 +1,18 @@
-name: build
+name: Snyk IaC Scan
+
 on: push
+
 jobs:
-  build:
-    name: Build
-    runs-on: ubuntu-20.04
+  snyk:
+    name: Snyk IaC Scan
+    runs-on: ubuntu-latest
+
     steps:
+      # Step 1: Checkout the repository
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Run Trivy vulnerability scanner in IaC mode
-        uses: aquasecurity/trivy-action@0.20.0
-        with:
-          scan-type: 'fs'
-          ignore-unfixed: true
-          format: 'table'
-          vuln-type: 'os,library'
-          severity: 'CRITICAL,HIGH'
-          args: --report
-
+      # Step 2: Set up Snyk (Install the Snyk CLI)
       - name: Set up Snyk
         uses: snyk/actions/setup@v2
         with:
@@ -28,5 +23,3 @@ jobs:
         run: snyk iac test --severity-threshold=high
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-
-    
