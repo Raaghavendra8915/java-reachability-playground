@@ -36,10 +36,18 @@ jobs:
           args: --severity-threshold=high
           severity: 'CRITICAL,HIGH'
     
-      - name: Push in ECR & Update Lambda Function
+      - name: Push in ECR
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           REPOSITORY: devsecops
           IMAGE_TAG: ${{ github.sha }}
         run: |
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+
+      - name: Scan Docker image
+        id: docker-scan
+        uses: alexjurkiewicz/ecr-scan-image@v3.0.0
+        with:
+          repository: devsecops
+          tag: v1.0.0
+          fail_threshold: high
