@@ -10,4 +10,4 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          file: infrastructure/main.tf
+          file: /infrastructure/main.tf
