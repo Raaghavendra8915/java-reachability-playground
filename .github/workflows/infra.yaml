@@ -20,6 +20,6 @@ jobs:
 
       # Step 3: Run the Snyk IaC scan
       - name: Snyk IaC Scan
-        run: snyk iac test main.tf --severity-threshold=high
+        run: snyk iac test infrastructure/main.tf --severity-threshold=high
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
