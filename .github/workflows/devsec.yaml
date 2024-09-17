@@ -73,7 +73,12 @@ jobs:
           docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
              
-
+      - name: Login to GitHub Packages
+        uses: docker/login-action@v1  # Updated to use Docker's official login-action
+        with:
+          registry: docker.pkg.github.com
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
     
           
       - name: Scan Docker image
