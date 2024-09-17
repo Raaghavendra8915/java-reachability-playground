@@ -26,16 +26,23 @@ jobs:
   sca-scan:
     needs: sast-scan
     runs-on: ubuntu-latest
-    name: Maven using Snyk security scan
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
+      - name: checkout the code
+        uses: actions/checkout@master
       - name: Run Snyk to check for vulnerabilities
         uses: snyk/actions/maven@master
-        continue-on-error: true 
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          snyk-token: ${{ secrets.SNYK_TOKEN }}
+          #args: --severity-threshold=high
+          args: --sarif-file-output=snyk.sarif
+          scan-type: 'fs'
+          ignore-unfixed: true
+          format: 'table'
+      - name: Upload result to GitHub Code Scanning
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: snyk.sarif
 
   Build-image-publish-to-ecr:
     needs: sca-scan
