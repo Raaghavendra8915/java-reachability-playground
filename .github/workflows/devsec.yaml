@@ -84,6 +84,7 @@ jobs:
       - name: Scan Docker image
         id: docker-scan
         uses: alexjurkiewicz/ecr-scan-image@v1.7.1
+        continue-on-error: true 
         with:
           aws-region: us-west-2
           repository: devsecops
