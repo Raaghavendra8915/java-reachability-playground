@@ -22,16 +22,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          
-      - name: Download OWASP Dependency Check
-        run: |
-          VERSION=$(curl -s https://jeremylong.github.io/DependencyCheck/current.txt)
-          curl -sL "https://github.com/jeremylong/DependencyCheck/releases/download/v$VERSION/dependency-check-$VERSION-release.zip" --output dependency-check.zip
-          unzip dependency-check.zip
-      - name: Run Dependency Check
-        run: |
-          ./dependency-check/bin/dependency-check.sh --out report.html --scan .
-          rm -rf dependency-check*
 
   sca-scan:
     needs: sast-scan
