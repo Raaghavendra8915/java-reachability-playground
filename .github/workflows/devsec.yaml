@@ -72,6 +72,16 @@ jobs:
           registry: docker.pkg.github.com
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Scan Docker image
+        id: docker-scan
+        uses: alexjurkiewicz/ecr-scan-image@v1.7.1
+        with:
+          aws-region: us-west-2
+          repository: devsecops
+          tag: 1.0.0
+      # Access scan results in later steps
+      - run: echo "${{ steps.docker-scan.outputs.total }} total vulnerabilities."
 
   Image-Scan-with-ECR:
     needs: Build-image-publish-to-ecr
