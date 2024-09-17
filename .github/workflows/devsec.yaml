@@ -93,22 +93,10 @@ jobs:
       # Access scan results in later steps
       - run: echo "${{ steps.docker-scan.outputs.total }} total vulnerabilities."
 
-  Image-Scan-with-ECR:
-    needs: Build-image-publish-to-ecr
-    runs-on: ubuntu-latest
-    name: Image Scan with ECR
-    steps:
-      - name: Scan Docker image with ECR Scan
-        uses: alexjurkiewicz/ecr-scan-image@v1.7.1
-        continue-on-error: true
-        with:
-          aws-region: us-west-2
-          repository: $REGISTRY/$REPOSITORY
-          tag: 1.0.0
-      - run: echo "${{ steps.docker-scan.outputs.total }} total vulnerabilities."
+     
 
   Image-Deploy-to-EKS:
-    needs: Image-Scan-with-ECR
+    needs: Build-image-publish-to-ecr
     runs-on: ubuntu-latest
     name: Image Deploy to EKS
     steps:
