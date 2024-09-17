@@ -35,6 +35,7 @@ jobs:
           image: $REGISTRY/$REPOSITORY:$IMAGE_TAG
           args: --severity-threshold=high
           severity: 'CRITICAL,HIGH'
+          format: 'table'
     
       - name: Push in ECR
         env:
